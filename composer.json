@@ -1,7 +1,7 @@
 {
-    "name"        : "unit27/notification-pusher",
+    "name"        : "kirant400/notification-pusher",
     "type"        : "standalone",
-    "description" : "PHP library for sending push notifications to Apple / Android / Microsoft Windows Phone users",
+    "description" : "PHP library for sending push notifications to Apple / Android / Microsoft Windows Phone / Blackberry users",
     "license"     : "MIT",
 
     "authors": [
@@ -13,6 +13,11 @@
         {
           "name"  : "Przemyslaw Ankowski",
           "email" : "przemyslaw.ankowski@gmail.com"
+        },
+
+        {
+          "name"  : "kirant400",
+          "email" : "kirant400@gmail.com"
         }
     ],
 
