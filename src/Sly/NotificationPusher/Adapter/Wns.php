@@ -1,6 +1,6 @@
 <?php
 /*******************************************************************************
- * Name: Notification pusher / Microsoft adapter
+ * Name: Notification pusher / Wns adapter
  * Version: 1.0
  * Author: Przemyslaw Ankowski (przemyslaw.ankowski@gmail.com)
  ******************************************************************************/
@@ -9,13 +9,18 @@
 // Default namespace
 namespace Sly\NotificationPusher\Adapter;
 
-
+use Sly\NotificationPusher\Model\BaseOptionedModel;
+use Sly\NotificationPusher\Model\PushInterface;
+use Sly\NotificationPusher\Collection\DeviceCollection;
+use Sly\NotificationPusher\Exception\PushException;
+use Sly\NotificationPusher\Client;
+use Sly\NotificationPusher\Exception;
 /**
- * Class Microsoft
+ * Class Wns
  *
  * @package Sly\NotificationPusher\Adapter
  */
-class Microsoft extends \Sly\NotificationPusher\Adapter\BaseAdapter implements \Sly\NotificationPusher\Adapter\AdapterInterface
+class Wns extends BaseAdapter 
 {
     /**
      * Push
@@ -24,12 +29,12 @@ class Microsoft extends \Sly\NotificationPusher\Adapter\BaseAdapter implements \
      * @return \Sly\NotificationPusher\Collection\DeviceCollection
      * @throws \Sly\NotificationPusher\PushException
      */
-    public function push(\Sly\NotificationPusher\Model\PushInterface $Push) {
+    public function push(PushInterface $Push) {
         // Create microsoft client
-        $Client = new \Sly\NotificationPusher\Client\Microsoft();
+        $Client = new Microsoft();
 
         // Create pushed devices collection
-        $PushedDevices = new \Sly\NotificationPusher\Collection\DeviceCollection();
+        $PushedDevices = new DeviceCollection();
 
         // Try to send to each client
         foreach ($Push->getDevices() as $Device) {
@@ -38,12 +43,15 @@ class Microsoft extends \Sly\NotificationPusher\Adapter\BaseAdapter implements \
 
             // Try to send
             try {
-                $this->response = $Client->send($Device->getToken(), $Message->getText(), $Message->getOption("view"), $Message->getOption("custom"));
+                $this->response = $Client->send($Device->getToken(), 
+                    $Message->getText(), 
+                    $Message->getOption("view"), 
+                    $Message->getOption("custom"));
             }
 
             // Something goes wrong
-            catch (\Sly\NotificationPusher\Exception\RuntimeException $Exception) {
-                throw new \Sly\NotificationPusher\Exception\PushException($Exception->getMessage());
+            catch (RuntimeException $Exception) {
+                throw new PushException($Exception->getMessage());
             }
 
             // Add device to pushed devices list
