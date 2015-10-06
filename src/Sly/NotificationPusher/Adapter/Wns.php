@@ -80,7 +80,14 @@ class Wns extends BaseAdapter
     public function getDefaultParameters() {
         return array();
     }
-
+    /**
+     * Get defined parameters
+     *
+     * @return array
+     */
+    public function getDefinedParameters(){
+        return array();
+    }
     /**
      * Get required parameters
      *
