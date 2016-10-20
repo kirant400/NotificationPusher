@@ -47,7 +47,7 @@ class Apns extends BaseAdapter
      *
      * @throws \Sly\NotificationPusher\Exception\AdapterException
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters = [])
     {
         parent::__construct($parameters);
 
@@ -94,11 +94,11 @@ class Apns extends BaseAdapter
     public function getFeedback()
     {
         $client           = $this->getOpenedFeedbackClient();
-        $responses        = array();
+        $responses        = [];
         $serviceResponses = $client->feedback();
 
         foreach ($serviceResponses as $response) {
-            $responses[$response->getToken()] = new \DateTime(date("c", $response->getTime()));
+            $responses[$response->getToken()] = new \DateTime(date('c', $response->getTime()));
         }
 
         return $responses;
@@ -162,7 +162,7 @@ class Apns extends BaseAdapter
     {
         $badge = ($message->hasOption('badge'))
             ? (int) ($message->getOption('badge') + $device->getParameter('badge', 0))
-            : 0
+            : false
         ;
 
         $sound = $message->getOption('sound', 'bingbong.aiff');
@@ -205,10 +205,10 @@ class Apns extends BaseAdapter
         $serviceMessage->setId(sha1($device->getToken().$message->getText()));
         $serviceMessage->setAlert($alert);
         $serviceMessage->setToken($device->getToken());
-        if (0 !== $badge) {
+        if (false !== $badge) {
             $serviceMessage->setBadge($badge);
         }
-        $serviceMessage->setCustom($message->getOption('custom', array()));
+        $serviceMessage->setCustom($message->getOption('custom', []));
 
         if (null !== $sound) {
             $serviceMessage->setSound($sound);
@@ -238,7 +238,7 @@ class Apns extends BaseAdapter
      */
     public function getDefinedParameters()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -246,7 +246,7 @@ class Apns extends BaseAdapter
      */
     public function getDefaultParameters()
     {
-        return array('passPhrase' => null);
+        return ['passPhrase' => null];
     }
 
     /**
@@ -254,6 +254,6 @@ class Apns extends BaseAdapter
      */
     public function getRequiredParameters()
     {
-        return array('certificate');
+        return ['certificate'];
     }
 }
